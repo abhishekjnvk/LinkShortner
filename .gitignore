@@ -1,0 +1,6 @@
+vendor/
+writable/cache/*.log
+writable/debugbar/*
+writable/logs/*
+writable/session/*
+composer.lock
