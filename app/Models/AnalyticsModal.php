@@ -6,7 +6,7 @@ class AnalyticsModal extends Model
     protected $primaryKey = 'id';
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
-    protected $allowedFields = ['id', 'code', 'ip', 'time', 'data'];
+    protected $allowedFields = ['id', 'code', 'ip', 'time', 'data','times'];
     protected $useTimestamps = false;
     protected $skipValidation     = false;
 }

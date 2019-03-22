@@ -60,17 +60,16 @@
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="inner text-center">
                             <ul class="social-share rn-lg-size d-flex justify-content-center liststyle">
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-skype"></i></a></li>
+                                <li><a target="_blank" href="https://facebook.com/abhishekjnvk"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a target="_blank" href="https://github.com/abhishekjnvk"><i class="fab fa-github"></i></a></li>
+                                <li><a target="_blank" href="https://linkedin.com/in/abhishekjnvk"><i class="fab fa-linkedin-in"></i></a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                         <div class="inner text-lg-right text-center mt_md--20 mt_sm--20">
                             <div class="text">
-                                <p>© All Rights Reserved.</p>
+                                <p>Copyright © <a target="_blank" href="https://github.com/abhishekjnvk">abhishekjnvk.</a> All Rights Reserved.</p>
                             </div>
                         </div>
                     </div>

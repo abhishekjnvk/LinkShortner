@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="inner">
-                                <form action="<?=getenv('app.baseURL')?>home/create" method="post">
+                                <form action="<?= getenv('app.baseURL') ?>home/create" id="link_form" method="post" class="text-light">
                                     <h2 class="title theme-gradient">Link Shortener</h2>
                                     <span>Shorten & Track Your Link</span>
                                     <?  if(isset($session_data)){ ?>
@@ -47,9 +47,10 @@
                                         }?>
                                     </div>
                                     <?}?>
-                                    <input name="link" type="url" placeholder="Your Link" class="my-3 col-lg-4 text-light mx-auto" required/><br />
+                                    <input name="link" autocomplete="off"  id="link" type="url" placeholder="Your Link" class="my-3 col-lg-4 text-light mx-auto" required /><br />
+                                    <input name="password" autocomplete="off" id="password" type="text" placeholder="Analytics Password (Optional) " class="my-3 col-lg-4 text-light mx-auto" /><br />
                                     <div class="error-button">
-                                        <button class="rn-button-style--2 btn_solid" type="submit">Create Link</buttons>
+                                        <button class="rn-button-style--2 btn_solid" type="button" onclick="check()">Create Shorten Link</buttons>
                                     </div>
                                 </form>
                             </div>
@@ -73,17 +74,16 @@
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="inner text-center">
                             <ul class="social-share rn-lg-size d-flex justify-content-center liststyle">
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-skype"></i></a></li>
+                                <li><a target="_blank" href="https://facebook.com/abhishekjnvk"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a target="_blank" href="https://github.com/abhishekjnvk"><i class="fab fa-github"></i></a></li>
+                                <li><a target="_blank" href="https://linkedin.com/in/abhishekjnvk"><i class="fab fa-linkedin-in"></i></a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                         <div class="inner text-lg-right text-center mt_md--20 mt_sm--20">
                             <div class="text">
-                                <p>© All Rights Reserved.</p>
+                                <p>Copyright © <a target="_blank" href="https://github.com/abhishekjnvk">abhishekjnvk.</a> All Rights Reserved.</p>
                             </div>
                         </div>
                     </div>
@@ -99,6 +99,54 @@
     <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/masonry.js"></script>
     <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/stickysidebar.js"></script>
     <script src="<?= getenv('app.baseURL') ?>public/assets/js/main.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <script>
+        function check() {
+            jQuery(document).ready(function($) {
+                let password = $("#password").val();
+                let link = $("#link").val();
+                console.log(link)
+                console.log(validURL(link))
+                if (!validURL(link)) {
+                    $.alert("Invalid Link")
+                } else {
+                    if (!password) {
+                        $.confirm({
+                            title: "Are you sure?",
+                            content: "If You proceed without a password all your link analytics will be public",
+                            buttons: {
+                                wait: {
+                                    text: 'Cancel',
+                                    action: function() {}
+                                },
+                                continue: {
+                                    text: 'Continue Anyway!',
+                                    action: function() {
+                                        $("#link_form").submit();
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        $("#link_form").submit();
+                    }
+                }
+                return false;
+            });
+            return false;
+        }
+        function validURL(string) {
+            let url;
+            try {
+                url = new URL(string);
+            } catch (_) {
+                return false;
+            }
+            return url.protocol === "http:" || url.protocol === "https:";
+        }
+    </script>
 </body>
 
 </html>

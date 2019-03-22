@@ -40,10 +40,9 @@
                                     Shorted Link<br />
                                     <?  if(isset($link_code)){ 
                                             $short_link=getenv('app.baseURL')."go/$link_code";
-                                            // id='shorted_link' onClick='copyFunction()'
-                                            echo "<input type='text' value='$short_link' onclick='copyFunction()' class='text-danger text-center'  id='shorted_link' readonly/> ";
+                                            echo "<a href='$short_link' class='text-danger' target='_blank'>$short_link</a>";
                                         }?>
-                                    <br /> <button onclick="copyFunction()">Copy</button><br /><br /> Track Your Link at<br />
+                                    <br /> Track Your Link at<br />
                                     <?  if(isset($link_code)){ 
                                                 $short_link=getenv('app.baseURL')."Track/$link_code";
                                                 echo "<a href='$short_link' class='text-danger' target='_blank'>$short_link</a>";
@@ -70,17 +69,16 @@
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="inner text-center">
                             <ul class="social-share rn-lg-size d-flex justify-content-center liststyle">
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-skype"></i></a></li>
+                                <li><a target="_blank" href="https://facebook.com/abhishekjnvk"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a target="_blank" href="https://github.com/abhishekjnvk"><i class="fab fa-github"></i></a></li>
+                                <li><a target="_blank" href="https://linkedin.com/in/abhishekjnvk"><i class="fab fa-linkedin-in"></i></a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                         <div class="inner text-lg-right text-center mt_md--20 mt_sm--20">
                             <div class="text">
-                                <p>© All Rights Reserved.</p>
+                                <p>Copyright © <a target="_blank" href="https://github.com/abhishekjnvk">abhishekjnvk.</a> All Rights Reserved.</p>
                             </div>
                         </div>
                     </div>
@@ -96,16 +94,6 @@
     <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/masonry.js"></script>
     <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/stickysidebar.js"></script>
     <script src="<?= getenv('app.baseURL') ?>public/assets/js/main.js"></script>
-    <script>
-        function copyFunction() {
-            var copyText = document.getElementById("shorted_link");
-            copyText.select();
-            copyText.setSelectionRange(0, 99999)
-            document.execCommand("copy");
-            this.focus();
-            console.log("copied")
-        }
-    </script>
 </body>
 
 </html>

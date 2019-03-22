@@ -56,7 +56,8 @@ if (!function_exists('generate_id')) {
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
-        for ($i = 0; $i < 4; $i++) {
+        $id_length=6;
+        for ($i = 0; $i < $id_length; $i++) {
             $index = rand(0, strlen($characters) - 1);
             $randomString .= $characters[$index];
         }
@@ -108,18 +109,28 @@ if (!function_exists('logData')) {
                 $device = $dd->getDeviceName();
                 $brand = $dd->getBrandName();
                 $model = $dd->getModel();
-            }
-            $analytics_data['clientInfo'] = $clientInfo;
-            $analytics_data['osInfo'] = $osInfo;
-            $analytics_data['device'] = $device;
-            $analytics_data['brand'] = $brand;
-            $analytics_data['model'] = $model;
 
-            $analytics_database['data'] = json_encode($analytics_data);
-            $analytics_database['time'] = time();
-            $analytics_database['code'] = $id;
-            $analytics_database['ip'] = get_client_ip();
-            $analytics_modal->save($analytics_database);
+                $ip=get_client_ip();
+                $analytics_data['clientInfo'] = $clientInfo;
+                $analytics_data['osInfo'] = $osInfo;
+                $analytics_data['device'] = $device;
+                $analytics_data['brand'] = $brand;
+                $analytics_data['model'] = $model;
+                
+                $analytics_database['data'] = json_encode($analytics_data);
+                $analytics_database['time'] = time();
+                $analytics_database['code'] = $id;
+                $analytics_database['ip'] = $ip;
+            
+                // $pro=$analytics_modal->where(["ip"=>$ip,"code"=>$id])->first();
+                // if(empty($pro)){
+                    $analytics_modal->save($analytics_database);
+                // }else{
+                //     $new_data['times']=$pro->times+1;
+                //     $analytics_modal->where(["ip"=>$ip,"code"=>$id])->save($new_data);
+                // }
+
+            }
         }
     }
 }

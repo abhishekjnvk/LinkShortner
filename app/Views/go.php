@@ -22,7 +22,7 @@
             <div class="header-wrapper" id="header-wrapper">
                 <div class="header-left">
                     <div class="logo">
-                        <a href="<?=getenv('app.baseURL')?>">
+                        <a href="<?= getenv('app.baseURL') ?>">
                             <strong class="text-light">Link Shortener</strong>
                         </a>
                     </div>
@@ -52,7 +52,7 @@
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="inner">
                             <div class="logo text-center text-sm-left mb_sm--20">
-                                <a href="<?=getenv('app.baseURL')?>">
+                                <a href="<?= getenv('app.baseURL') ?>">
                                     <strong class="text-light">LS</strong>
                                 </a>
                             </div>
@@ -61,17 +61,16 @@
                     <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="inner text-center">
                             <ul class="social-share rn-lg-size d-flex justify-content-center liststyle">
-                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-skype"></i></a></li>
+                                <li><a target="_blank" href="https://facebook.com/abhishekjnvk"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a target="_blank" href="https://github.com/abhishekjnvk"><i class="fab fa-github"></i></a></li>
+                                <li><a target="_blank" href="https://linkedin.com/in/abhishekjnvk"><i class="fab fa-linkedin-in"></i></a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-12 col-sm-12 col-12">
                         <div class="inner text-lg-right text-center mt_md--20 mt_sm--20">
                             <div class="text">
-                                <p>© All Rights Reserved.</p>
+                                <p>Copyright © <a target="_blank" href="https://github.com/abhishekjnvk">abhishekjnvk.</a> All Rights Reserved.</p>
                             </div>
                         </div>
                     </div>
@@ -92,7 +91,7 @@
         setInterval(() => {
             if (time > 0)
                 time = time - 1;
-            document.getElementById("timer").innerHTML = "Redirecting you in "+time + " second";
+            document.getElementById("timer").innerHTML = "Redirecting you in " + time + " second";
             if (time < 1) {
                 window.location = `<?= $link_detail->link ?>`;
             }

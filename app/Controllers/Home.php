@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\LinkModal;
+
 class Home extends BaseController
 {
 	public function index()
@@ -23,7 +24,7 @@ class Home extends BaseController
 			$data['code'] = $code;
 			$data['date'] = time();
 			$data['analytics'] = 1;
-			$data['password'] = 1234;
+			$data['password'] = $_POST['password'];
 			$data['title'] = "This Is Test";
 			if ($link_modal->save($data)) {
 				$session->setFlashdata('link_code', $code);
