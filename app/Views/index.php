@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/x-icon" href="<?= getenv('app.baseURL') ?>public/assets/images/favicon.ico">
     <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/vendor/bootstrap.min.css">
-    <link href="https://abhishekjnvk.github.io/Font-Awesome-Pro/include/css/all.min.css" rel="stylesheet">
+    <!-- <link href="https://abhishekjnvk.github.io/Font-Awesome-Pro/include/css/all.min.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/vendor/lightbox.css">
     <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/style.css">
 
@@ -38,16 +38,16 @@
                                 <form action="<?= getenv('app.baseURL') ?>home/create" id="link_form" method="post" class="text-light">
                                     <h2 class="title theme-gradient">Link Shortener</h2>
                                     <span>Shorten & Track Your Link</span>
-                                    <?  if(isset($session_data)){ ?>
-                                    <div class="alert alert-primary col-lg-4 mx-auto" role="alert">
-                                        <?= $session_data ?><br />
-                                        <?  if(isset($link_code)){ 
-                                            $short_link=getenv('app.baseURL')."go/$link_code";
-                                            echo "<a href='$short_link'>$short_link</a>";
-                                        }?>
-                                    </div>
-                                    <?}?>
-                                    <input name="link" autocomplete="off"  id="link" type="url" placeholder="Your Link" class="my-3 col-lg-4 text-light mx-auto" required /><br />
+                                    <?php if (isset($session_data)) { ?>
+                                        <div class="alert alert-primary col-lg-4 mx-auto" role="alert">
+                                            <?= $session_data ?><br />
+                                            <?php if (isset($link_code)) {
+                                                $short_link = getenv('app.baseURL') . "go/$link_code";
+                                                echo "<a href='$short_link'>$short_link</a>";
+                                            } ?>
+                                        </div>
+                                    <?php } ?>
+                                    <input name="link" autocomplete="off" id="link" type="url" placeholder="Your Link" class="my-3 col-lg-4 text-light mx-auto" required /><br />
                                     <input name="password" autocomplete="off" id="password" type="text" placeholder="Analytics Password (Optional) " class="my-3 col-lg-4 text-light mx-auto" /><br />
                                     <div class="error-button">
                                         <button class="rn-button-style--2 btn_solid" type="button" onclick="check()">Create Shorten Link</buttons>
@@ -137,6 +137,7 @@
             });
             return false;
         }
+
         function validURL(string) {
             let url;
             try {

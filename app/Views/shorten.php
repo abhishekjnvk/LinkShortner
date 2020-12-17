@@ -38,15 +38,15 @@
                                 <span>Track & Shorten Your Link</span>
                                 <div class="alert alert-primary col-lg-4 mx-auto" role="alert">
                                     Shorted Link<br />
-                                    <?  if(isset($link_code)){ 
-                                            $short_link=getenv('app.baseURL')."go/$link_code";
-                                            echo "<a href='$short_link' class='text-danger' target='_blank'>$short_link</a>";
-                                        }?>
+                                    <?php if (isset($link_code)) {
+                                        $short_link = getenv('app.baseURL') . "go/$link_code";
+                                        echo "<a href='$short_link' class='text-danger' target='_blank'>$short_link</a>";
+                                    } ?>
                                     <br /> Track Your Link at<br />
-                                    <?  if(isset($link_code)){ 
-                                                $short_link=getenv('app.baseURL')."Track/$link_code";
-                                                echo "<a href='$short_link' class='text-danger' target='_blank'>$short_link</a>";
-                                            }?>
+                                    <?php if (isset($link_code)) {
+                                        $short_link = getenv('app.baseURL') . "Track/$link_code";
+                                        echo "<a href='$short_link' class='text-danger' target='_blank'>$short_link</a>";
+                                    } ?>
                                 </div>
                             </div>
                         </div>

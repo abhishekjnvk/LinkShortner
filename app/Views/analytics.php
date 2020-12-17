@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/style.css">
 
 </head>
+
 <body>
     <div class="main-page">
         <header class="header-area formobile-menu header--transparent black-logo-version ">
@@ -34,83 +35,84 @@
                     <div class="col-lg-12">
                         <div class="breadcrumb-inner pt--100 pt_sm--40 pt_md--50">
                             <h2 class="title">Link Tracking</h2>
-                            <?  if(isset($server_message)){ ?>
-                            <div class="alert alert-primary col-lg-4 mx-auto" role="alert">
-                                <?= $server_message ?>
-                                <?php
+                            <?php if (isset($server_message)) { ?>
+                                <div class="alert alert-primary col-lg-4 mx-auto" role="alert">
+                                    <?= $server_message ?>
+                                    <?php
 
-                                if(isset($ask_password)){?>
-                               <form method="post"> <input type="password" class="bg-light" name="password"/><button class="btn btn-sm btn-primary mt-1">Unlock Analytics</button></form>
-                                <?}
-                                ?>
-                            </div>
-                            <?}?>
+                                    if (isset($ask_password)) { ?>
+                                        <form method="post"> <input type="password" class="bg-light" name="password" /><button class="btn btn-sm btn-primary mt-1">Unlock Analytics</button></form>
+                                    <?php }
+                                    ?>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <?
-        if(!empty($all_data)){
+        if (!empty($all_data)) {
         ?>
-        <main class="page-wrapper">
-            <!-- Start Accordion Area  -->
-            <div class="rn-accordion-area rn-section-gap bg_color--5">
-                <div class="container">
-                    <div class="rn-accordion">
-                        <div id="accordion" class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">IP</th>
-                                        <th scope="col">Device</th>
-                                        <th scope="col">Browser<small> (Version)</small></th>
-                                        <th scope="col">OS</th>
-                                        <th scope="col">City</th>
-                                        <th scope="col">Timestamp</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?
-                                    $sl=1;
-                                    foreach($all_data as $data){
-                                        $dat_object=json_decode($data->data);
-                                        $device=$dat_object->device;
-                                        if(!empty($dat_object->brand)){
-                                            $device=$device.", ".$dat_object->brand;
-                                        }if(!empty($dat_object->modal)){
-                                            $device=$device.", ".$dat_object->modal;
-                                        }
-                                    ?>
-                                    <tr>
-                                        <th scope="row"><?= $sl++ ?></th>
-                                        <td><?= $data->ip ?></td>
-                                        <td class="text-capitalize"><?= $device ?></td>
-                                        <td><?= $dat_object->clientInfo->name ?> <small>(<?= $dat_object->clientInfo->version ?>)</small></td>
-                                        <td><?= $dat_object->osInfo->name ?> <?php
-                                                                                if (!empty($dat_object->osInfo->platform)) { ?>
-                                                                                    <small>(<?= $dat_object->osInfo->platform ?>)</small>
-                                                                            <?php } ?>
-                                        </td>
+            <main class="page-wrapper">
+                <!-- Start Accordion Area  -->
+                <div class="rn-accordion-area rn-section-gap bg_color--5">
+                    <div class="container">
+                        <div class="rn-accordion">
+                            <div id="accordion" class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">IP</th>
+                                            <th scope="col">Device</th>
+                                            <th scope="col">Browser<small> (Version)</small></th>
+                                            <th scope="col">OS</th>
+                                            <th scope="col">City</th>
+                                            <th scope="col">Timestamp</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?
+                                        $sl = 1;
+                                        foreach ($all_data as $data) {
+                                            $dat_object = json_decode($data->data);
+                                            $device = $dat_object->device;
+                                            if (!empty($dat_object->brand)) {
+                                                $device = $device . ", " . $dat_object->brand;
+                                            }
+                                            if (!empty($dat_object->modal)) {
+                                                $device = $device . ", " . $dat_object->modal;
+                                            }
+                                        ?>
+                                            <tr>
+                                                <th scope="row"><?= $sl++ ?></th>
+                                                <td><?= $data->ip ?></td>
+                                                <td class="text-capitalize"><?= $device ?></td>
+                                                <td><?= $dat_object->clientInfo->name ?> <small>(<?= $dat_object->clientInfo->version ?>)</small></td>
+                                                <td><?= $dat_object->osInfo->name ?> <?php
+                                                                                        if (!empty($dat_object->osInfo->platform)) { ?>
+                                                        <small>(<?= $dat_object->osInfo->platform ?>)</small>
+                                                    <?php } ?>
+                                                </td>
 
-                                        <td><?= getCity($data->ip) ?></td>
-                                        <td><?= date('d/m/Y h:i:s A', $data->time) ?></td>
-                                    </tr>
-                                    <?}?>
-                                </tbody>
-                            </table>
+                                                <td><?= getCity($data->ip) ?></td>
+                                                <td><?= date('d/m/Y h:i:s A', $data->time) ?></td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
 
 
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- End Accordion Area  -->
+                <!-- End Accordion Area  -->
 
-        </main>
-        <?}?>
+            </main>
+        <?php } ?>
         <div class="footer-style-2 ptb--30 bg_image bg_image--1" data-black-overlay="6">
             <div class="wrapper plr--50 plr_sm--20">
                 <div class="row align-items-center justify-content-between">
