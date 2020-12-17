@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/x-icon" href="<?= getenv('app.baseURL') ?>public/assets/images/favicon.ico">
     <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/vendor/bootstrap.min.css">
-    <!-- <link href="https://abhishekjnvk.github.io/Font-Awesome-Pro/include/css/all.min.css" rel="stylesheet"> -->
+    <link href="https://abhishekjnvk.github.io/Font-Awesome-Pro/include/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/vendor/lightbox.css">
     <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/style.css">
 
