@@ -35,7 +35,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="inner">
-                                <form action="<?= getenv('app.baseURL') ?>home/create" id="link_form" method="post" class="text-light">
+                                <form action="<?= getenv('app.baseURL') ?>home/create" id="link_form" onsubmit="return check()" method="post" class="text-light">
                                     <h2 class="title theme-gradient">Link Shortener</h2>
                                     <span>Shorten & Track Your Link</span>
                                     <?php if (isset($session_data)) { ?>
@@ -47,10 +47,29 @@
                                             } ?>
                                         </div>
                                     <?php } ?>
+                                    <input name="title" autocomplete="off" type="text" placeholder="Link Title" class="my-3 col-lg-4 text-light mx-auto" required /><br />
                                     <input name="link" autocomplete="off" id="link" type="url" placeholder="Your Link" class="my-3 col-lg-4 text-light mx-auto" required /><br />
-                                    <input name="password" autocomplete="off" id="password" type="text" placeholder="Analytics Password (Optional) " class="my-3 col-lg-4 text-light mx-auto" /><br />
+
+                                    <div class="my-3 col-lg-4 text-light mx-auto">
+                                        Link Expiry: <select name="expiry" class="my-3 col-lg-8 px-2 text-light mx-auto">
+                                            <option value="0" selected>Never</option>
+                                            <option value="86400">24Hrs</option>
+                                            <option value="604800">7 Days</option>
+                                            <option value="2592000">30 Days</option>
+                                            <option value="31536000">1 Year</option>
+                                        </select>
+                                    </div>
+                                    <div class="my-3 row col-lg-4 text-light mx-auto">
+                                        <div class="row col-lg-4 py-4 custom-control custom-switch  mx-auto">
+                                            <input type="checkbox" class="custom-control-input" name="isAnalyticsEnabled" id="enableAnalytics">
+                                            <label class="custom-control-label cursor-pointer" for="enableAnalytics">Analytics</label>
+                                        </div>
+                                        <div class="my-3 col-lg-8 px-2 text-light mx-auto" id="password_div">
+                                            <input name="password" autocomplete="off" id="password" type="text" placeholder="Analytics Password" class="text-light mx-auto" /><br />
+                                        </div>
+                                    </div>
                                     <div class="error-button">
-                                        <button class="rn-button-style--2 btn_solid" type="button" onclick="check()">Create Shorten Link</buttons>
+                                        <button class="rn-button-style--2 btn_solid" type="submit">Create Shorten Link</buttons>
                                     </div>
                                 </form>
                             </div>
@@ -103,50 +122,52 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 
     <script>
-        function check() {
-            jQuery(document).ready(function($) {
+        jQuery(document).ready(function($) {
+            $("#password_div").hide();
+
+            //onchange on enableAnalytics checkbox
+            $("#enableAnalytics").change(function() {
+                if (this.checked) {
+                    $("#password").prop('required', true);
+                    $("#password_div").show();
+                } else {
+                    $("#password").prop('required', false);
+                    $("#password_div").hide();
+                }
+            });
+
+            function check() {
                 let password = $("#password").val();
                 let link = $("#link").val();
-                console.log(link)
-                console.log(validURL(link))
                 if (!validURL(link)) {
                     $.alert("Invalid Link")
+                    return false;
                 } else {
-                    if (!password) {
-                        $.confirm({
-                            title: "Are you sure?",
-                            content: "If You proceed without a password all your link analytics will be public",
-                            buttons: {
-                                wait: {
-                                    text: 'Cancel',
-                                    action: function() {}
-                                },
-                                continue: {
-                                    text: 'Continue Anyway!',
-                                    action: function() {
-                                        $("#link_form").submit();
-                                    }
-                                }
-                            }
-                        });
-                    } else {
-                        $("#link_form").submit();
+                    let isAnalyticsEnabled = $("#enableAnalytics").is(":checked");
+                    if (isAnalyticsEnabled) {
+                        if (password.length < 4) {
+                            $.alert("Password must be atleast 4 characters long")
+                            return false;
+                        }
                     }
+
+                    return true;
                 }
                 return false;
-            });
-            return false;
-        }
-
-        function validURL(string) {
-            let url;
-            try {
-                url = new URL(string);
-            } catch (_) {
                 return false;
             }
-            return url.protocol === "http:" || url.protocol === "https:";
-        }
+
+
+            function validURL(string) {
+                let url;
+                try {
+                    url = new URL(string);
+                } catch (_) {
+                    return false;
+                }
+                return url.protocol === "http:" || url.protocol === "https:";
+            }
+        });
     </script>
 </body>
 

@@ -13,20 +13,16 @@ class Home extends BaseController
 		$data['session_data'] = $session->getFlashdata('server_message');
 		return view('index', $data);
 	}
+
 	public function create()
 	{
 		$session = session();
-		if (isset($_POST['link'])) {
+		if (isset($_POST['link']) && !empty($_POST['link']) && isset($_POST['title']) && !empty($_POST['title'])) {
 			helper('master_helper');
-			$code = generate_id();
+
 			$link_modal = new LinkModal();
-			$data['link'] = $_POST['link'];
-			$data['code'] = $code;
-			$data['date'] = time();
-			$data['analytics'] = 1;
-			$data['password'] = $_POST['password'];
-			$data['title'] = "This Is Test";
-			if ($link_modal->save($data)) {
+			$code = $link_modal->shortenUrl($_POST['link'], $_POST['password'], $_POST['title'], $_POST['expiry']);
+			if (!empty($code)) {
 				$session->setFlashdata('link_code', $code);
 				$session->setFlashdata('server_message', 'Link Generated With Analytics');
 				return redirect()->to(getenv('app.baseURL') . "Home/shorten/" . $code);
@@ -38,15 +34,24 @@ class Home extends BaseController
 		}
 		return redirect()->to(getenv('app.baseURL'));
 	}
+
 	public function shorten($code)
 	{
 		$data['link_code'] = $code;
 		$link_modal = new LinkModal();
-		if ((empty($link_modal->where('code', $code)->first()))) {
+		$link_detail = $link_modal->getLinkDetail($code);
+		if (empty($link_detail)) {
 			$data['error'] = 'No Link Found';
 			return view('error', $data);
+		} else {
+			if ($link_detail->isAnalyticsEnabled) {
+				$data['session_data'] = 'Link Generated With Analytics';
+				$data['analytics'] = $code;
+			} else {
+				$data['session_data'] = 'Link Generated';
+				$data['analytics'] = null;
+			}
 		}
-		$data['session_data'] = 'Link Generated With Analytics';
 		return view('shorten', $data);
 	}
 }

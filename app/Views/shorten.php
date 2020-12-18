@@ -42,10 +42,9 @@
                                         $short_link = getenv('app.baseURL') . "go/$link_code";
                                         echo "<a href='$short_link' class='text-danger' target='_blank'>$short_link</a>";
                                     } ?>
-                                    <br /> Track Your Link at<br />
-                                    <?php if (isset($link_code)) {
+                                    <?php if (!empty($analytics)) {
                                         $short_link = getenv('app.baseURL') . "Track/$link_code";
-                                        echo "<a href='$short_link' class='text-danger' target='_blank'>$short_link</a>";
+                                        echo "<br /> Track Your Link at<br /><a href='$short_link' class='text-danger' target='_blank'>$short_link</a>";
                                     } ?>
                                 </div>
                             </div>
@@ -94,6 +93,7 @@
     <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/masonry.js"></script>
     <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/stickysidebar.js"></script>
     <script src="<?= getenv('app.baseURL') ?>public/assets/js/main.js"></script>
+
 </body>
 
 </html>

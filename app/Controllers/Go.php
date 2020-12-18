@@ -2,30 +2,27 @@
 
 namespace App\Controllers;
 
-use App\Models\AnalyticsModal;
 use App\Models\LinkModal;
-use DeviceDetector\DeviceDetector;
-use DeviceDetector\Parser\Device\AbstractDeviceParser;
 
 class Go extends BaseController
 {
 	function _remap($linkCode)
 	{
-		$session = session();
 		helper('master_helper');
-
 		if ($linkCode) {
 			$link_modal = new LinkModal();
-			$link_detail = $link_modal->where('code', $linkCode)->first();
+			$link_detail = $link_modal->getLinkDetail($linkCode);
 			if (!empty($link_detail)) {
-				$userAgent = $_SERVER['HTTP_USER_AGENT'];
-				logData($linkCode, $userAgent);
-				$data['link_detail'] = $link_detail;
+				if ($link_detail->isAnalyticsEnabled) {
+					$userAgent = $_SERVER['HTTP_USER_AGENT'];
+					logData($linkCode, $userAgent);
+				}
 				$auth_url = $link_detail->link;
-				header("Location: $auth_url");
+				echo $auth_url;
+				// header("Location: $auth_url");
 				exit;
 			} else {
-				$data['error'] = 'No Link Found';
+				$data['error'] = 'No Link Found/Link Expired';
 				return view('error', $data);
 			}
 		} else {

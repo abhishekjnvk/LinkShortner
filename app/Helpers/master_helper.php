@@ -15,6 +15,7 @@ if (!function_exists('getIpData')) {
         return $details;
     }
 }
+
 if (!function_exists('getCity')) {
     function getCity($ip)
     {
@@ -56,19 +57,21 @@ if (!function_exists('generate_id')) {
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
-        $id_length=6;
+        $id_length = 6;
         for ($i = 0; $i < $id_length; $i++) {
             $index = rand(0, strlen($characters) - 1);
             $randomString .= $characters[$index];
         }
+
         $property = new LinkModal();
-        if (empty($property->where('code', $randomString)->findAll())) {
+        if ($property->isCodeInUse($randomString) === false) {
             return $randomString;
         } else {
-            generate_id();
+            return generate_id();
         }
     }
 }
+
 if (!function_exists('get_client_ip')) {
     function get_client_ip()
     {
@@ -110,21 +113,21 @@ if (!function_exists('logData')) {
                 $brand = $dd->getBrandName();
                 $model = $dd->getModel();
 
-                $ip=get_client_ip();
+                $ip = get_client_ip();
                 $analytics_data['clientInfo'] = $clientInfo;
                 $analytics_data['osInfo'] = $osInfo;
                 $analytics_data['device'] = $device;
                 $analytics_data['brand'] = $brand;
                 $analytics_data['model'] = $model;
-                
+
                 $analytics_database['data'] = json_encode($analytics_data);
                 $analytics_database['time'] = time();
                 $analytics_database['code'] = $id;
                 $analytics_database['ip'] = $ip;
-            
+
                 // $pro=$analytics_modal->where(["ip"=>$ip,"code"=>$id])->first();
                 // if(empty($pro)){
-                    $analytics_modal->save($analytics_database);
+                $analytics_modal->save($analytics_database);
                 // }else{
                 //     $new_data['times']=$pro->times+1;
                 //     $analytics_modal->where(["ip"=>$ip,"code"=>$id])->save($new_data);

@@ -17603,3 +17603,8 @@ a.purchase-btn:hover {
   border: 2px solid #fff;
   color: #fff;
 }
+
+
+.cursor-pointer{
+  cursor: pointer;
+}
