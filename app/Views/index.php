@@ -9,6 +9,9 @@
     <link href="https://abhishekjnvk.github.io/Font-Awesome-Pro/include/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/styles.css">
+    <script>
+        const base_url = "<?= getenv('app.baseURL') ?>";
+    </script>
 </head>
 
 <body class="d-flex flex-column">

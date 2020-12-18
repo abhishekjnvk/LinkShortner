@@ -46,7 +46,7 @@ async function submitForm() {
     var link_expiry = $("#link_expiry").val();
     var analytics_password = $("#analytics_password").val();
     var title = $("#link_title").val();
-
+    
     try {
         let headersList = {
             "Accept": "*/*",
@@ -59,7 +59,7 @@ async function submitForm() {
             "analytics_password": analytics_password,
             "title": title
         });
-        let response = await fetch("<?= getenv('app.baseURL') ?>API/Shorten", {
+        let response = await fetch(`${base_url}API/Shorten`, {
             method: "POST",
             body: bodyContent,
             headers: headersList
@@ -80,7 +80,7 @@ async function submitForm() {
                             <strong>Analytics Password: ${analytics_password}</strong>`:""}
                             <br/><br/><br/><br/><br/>
 
-                            <a href="<?= getenv('app.baseURL') ?>" class="btn btn-sm btn-default mt-2">Shorten Another URL</a>
+                            <a href="${base_url}" class="btn btn-sm btn-default mt-2">Shorten Another URL</a>
                         </div>`
             );
         } else {
@@ -88,7 +88,7 @@ async function submitForm() {
             $("#alert_box").html(
                 `<div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>Error!</strong> ${data.message}<br/><br/>
-                            <a href="<?= getenv('app.baseURL') ?>" class="btn btn-sm btn-outline-primary mt-2">Shorten Another URL</a>
+                            <a href="${base_url}" class="btn btn-sm btn-outline-primary mt-2">Shorten Another URL</a>
                         </div>`
             );
         }
@@ -97,7 +97,7 @@ async function submitForm() {
         $("#alert_box").html(
             `<div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Error!</strong> ${e.statusText}<br/><br/>
-                            <a href="<?= getenv('app.baseURL') ?>" class="btn btn-sm btn-outline-primary mt-2">Shorten Another URL</a>
+                            <a href="${base_url}" class="btn btn-sm btn-outline-primary mt-2">Shorten Another URL</a>
                     </div>`
         );
 
