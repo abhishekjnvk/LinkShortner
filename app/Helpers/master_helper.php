@@ -125,14 +125,13 @@ if (!function_exists('logData')) {
                 $analytics_database['code'] = $id;
                 $analytics_database['ip'] = $ip;
 
-                // $pro=$analytics_modal->where(["ip"=>$ip,"code"=>$id])->first();
-                // if(empty($pro)){
-                $analytics_modal->save($analytics_database);
-                // }else{
-                //     $new_data['times']=$pro->times+1;
-                //     $analytics_modal->where(["ip"=>$ip,"code"=>$id])->save($new_data);
-                // }
-
+                $pro = $analytics_modal->where(["ip" => $ip, "code" => $id])->orderBY('time', 'DESC')->first();
+                if (empty($pro)) {
+                    $analytics_modal->save($analytics_database);
+                } else {
+                    $analytics_database['times'] = $pro->times + 1;
+                    $analytics_modal->save($analytics_database);
+                }
             }
         }
     }

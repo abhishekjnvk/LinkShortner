@@ -28,7 +28,7 @@ class LinkModal extends Model
 
     public function getLinkDetail($code)
     {
-        $link = $this->select('link')->where('code', $code)->first();
+        $link = $this->where('code', $code)->first();
         if (!empty($link)) {
             if ($link->expiry > 0) {
                 if ($link->expiry > time()) {

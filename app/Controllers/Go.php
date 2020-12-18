@@ -19,7 +19,7 @@ class Go extends BaseController
 				}
 				$auth_url = $link_detail->link;
 				echo $auth_url;
-				// header("Location: $auth_url");
+				header("Location: $auth_url");
 				exit;
 			} else {
 				$data['error'] = 'No Link Found/Link Expired';
