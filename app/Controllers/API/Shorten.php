@@ -31,6 +31,7 @@ class Shorten extends BaseController
                 $this->response->setStatusCode(400);
                 $response['status'] = false;
                 $response['message'] = "URL is required";
+                $response['body'] = $body;
             } else {
                 $url = $body->url;
                 if (!$this->isValidURL($url)) {
@@ -43,19 +44,17 @@ class Shorten extends BaseController
                 $linkTitle = "";
                 $expiry = 0;
 
-                if (isset($body->analyticsPassword)) {
-                    $analyticsPassword = $body->analyticsPassword;
+                if (isset($body->analytics_password)) {
+                    $analyticsPassword = $body->analytics_password;
                 }
                 if (isset($body->expiry)) {
                     $expiry = $body->expiry;
                 }
-                if (isset($body->linkTitle)) {
-                    $linkTitle = $body->linkTitle;
+                if (isset($body->link_title)) {
+                    $linkTitle = $body->link_title;
                 }
                 $link_model = new LinkModal();
-
                 $link = $link_model->shortenUrl($url, $analyticsPassword, $linkTitle, $expiry);
-
                 if (empty($link)) {
                     $this->response->setStatusCode(500);
                     $response['status'] = false;
@@ -63,7 +62,9 @@ class Shorten extends BaseController
                     return json_encode($response);
                 } else {
                     $link['link'] = base_url("/go/" . $link['code']);
-
+                    if ($link['isAnalyticsEnabled']) {
+                        $link['analytics_link'] = base_url("/track/" . $link['code']);
+                    }
                     $link = $link_model->normalizeUrl($link);
                     $this->response->setStatusCode(200);
                     $response['message'] = "OK";

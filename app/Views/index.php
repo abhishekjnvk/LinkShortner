@@ -1,174 +1,110 @@
-<!doctype html>
-<html class="no-js" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <meta name="robots" content="noindex, follow" />
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" type="image/x-icon" href="<?= getenv('app.baseURL') ?>public/assets/images/favicon.ico">
-    <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/vendor/bootstrap.min.css">
     <link href="https://abhishekjnvk.github.io/Font-Awesome-Pro/include/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/vendor/lightbox.css">
-    <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/assets/css/style.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/styles.css">
 </head>
 
-<body>
-    <div class="main-page">
-        <header class="header-area formobile-menu header--transparent black-logo-version ">
-            <div class="header-wrapper" id="header-wrapper">
-                <div class="header-left">
-                    <div class="logo">
-                        <a href="<?= getenv('app.baseURL') ?>">
-                            <strong class="text-light">Link Shortener</strong>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <main class="page-wrapper">
-            <div class="error-page-inner bg_color--4">
-                <div class="container">
+<body class="d-flex flex-column">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 mx-auto">
+                <div class="form-body">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="inner">
-                                <form action="<?= getenv('app.baseURL') ?>home/create" id="link_form" onsubmit="return check()" method="post" class="text-light">
-                                    <h2 class="title theme-gradient">Link Shortener</h2>
-                                    <span>Shorten & Track Your Link</span>
-                                    <?php if (isset($session_data)) { ?>
-                                        <div class="alert alert-primary col-lg-4 mx-auto" role="alert">
-                                            <?= $session_data ?><br />
-                                            <?php if (isset($link_code)) {
-                                                $short_link = getenv('app.baseURL') . "go/$link_code";
-                                                echo "<a href='$short_link'>$short_link</a>";
-                                            } ?>
+                        <div class="form-holder">
+                            <div class="form-content">
+                                <div class="form-items">
+                                    <h1 class="text-center theme-gradient">Link Shortener</h1>
+                                    <div id="alert_box"></div>
+                                    <form class="requires-validation mt-3" id="shortener_form" novalidate>
+                                        <div class="col-md-12">
+                                            <label for="link_address">URL</label>
+                                            <input class="form-control mt-1" type="url" id="link_address" name="link" placeholder="Url to Shorten" required>
+                                            <div class="invalid-feedback">Please enter a valid url</div>
                                         </div>
-                                    <?php } ?>
-                                    <input name="title" autocomplete="off" type="text" placeholder="Link Title" class="my-3 col-lg-4 text-light mx-auto" required /><br />
-                                    <input name="link" autocomplete="off" id="link" type="url" placeholder="Your Link" class="my-3 col-lg-4 text-light mx-auto" required /><br />
 
-                                    <div class="my-3 col-lg-4 text-light mx-auto">
-                                        Link Expiry: <select name="expiry" class="my-3 col-lg-8 px-2 text-light mx-auto">
-                                            <option value="0" selected>Never</option>
-                                            <option value="86400">24Hrs</option>
-                                            <option value="604800">7 Days</option>
-                                            <option value="2592000">30 Days</option>
-                                            <option value="31536000">1 Year</option>
-                                        </select>
-                                    </div>
-                                    <div class="my-3 row col-lg-4 text-light mx-auto">
-                                        <div class="row col-lg-4 py-4 custom-control custom-switch  mx-auto">
-                                            <input type="checkbox" class="custom-control-input" name="isAnalyticsEnabled" id="enableAnalytics">
-                                            <label class="custom-control-label cursor-pointer" for="enableAnalytics">Analytics</label>
+                                        <div class="form-check form-switch mt-3">
+                                            <input class="form-check-input hand-pointer" type="checkbox" id="advance_options">
+                                            <label class="form-check-label hand-pointer" for="advance_options">Show Advance Options</label>
                                         </div>
-                                        <div class="my-3 col-lg-8 px-2 text-light mx-auto" id="password_div">
-                                            <input name="password" autocomplete="off" id="password" type="text" placeholder="Analytics Password" class="text-light mx-auto" /><br />
+
+                                        <div id="advance_options_div" class="hidden-item">
+
+                                            <div class="col-md-12 mt-3">
+                                                <label for="link_expiry">URL Title</label>
+                                                <input class="form-control mt-1" type="text" name="title" id="link_title" placeholder="Title">
+                                            </div>
+
+                                            <div class="col-md-12 mt-3">
+                                                <label for="link_expiry">URL Expiry</label>
+                                                <select name="expiry" id="link_expiry" class="form-select mt-1" required>
+                                                    <option selected value="0">No Expiry</option>
+                                                    <option value="86400">24Hrs</option>
+                                                    <option value="604800">7 Days</option>
+                                                    <option value="2592000">30 Days</option>
+                                                    <option value="31536000">1 Year</option>
+                                                </select>
+                                                <div class="invalid-feedback">Please select link expiry!</div>
+                                            </div>
+
+                                            <div class="col-md-12 mt-3">
+                                                <input type="radio" class="btn-check" name="analytics" id="analytics_disabled" autocomplete="off" checked required>
+                                                <label class="btn btn-sm btn-outline-secondary" for="analytics_disabled">Analytics Disabled</label>
+                                                <input type="radio" class="btn-check" name="analytics" id="analytics_enabled" autocomplete="off" required>
+                                                <label class="btn btn-sm btn-outline-secondary" for="analytics_enabled">Analytics Enabled</label><br />
+                                                <div class="invalid-feedback mt-2">Please a choice</div>
+                                            </div>
+
+                                            <div class="col-md-12 mt-3 hidden-item" id="password_div">
+                                                <label for="analytics_password">Analytics Password</label>
+                                                <input class="form-control mt-1" autocomplete="off" id="analytics_password" type="password" name="password" placeholder="Password">
+                                                <div class="valid-feedback">Password field is valid!</div>
+                                                <div class="invalid-feedback">Password field cannot be blank!</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="error-button">
-                                        <button class="rn-button-style--2 btn_solid" type="submit">Create Shorten Link</buttons>
-                                    </div>
-                                </form>
+
+
+                                        <div class="form-button text-center mt-3">
+                                            <button type="submit" id="btn-submit" class="btn btn-lg btn-outline-primary">Shorten URL</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
-        </main>
-        <div class="footer-style-2 ptb--30 bg_image bg_image--1" data-black-overlay="6">
-            <div class="wrapper plr--50 plr_sm--20">
-                <div class="row align-items-center justify-content-between">
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                        <div class="inner">
-                            <div class="logo text-center text-sm-left mb_sm--20">
-                                <a href="<?= getenv('app.baseURL') ?>">
-                                    <strong class="text-light">LS</strong>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-6 col-12">
-                        <div class="inner text-center">
-                            <ul class="social-share rn-lg-size d-flex justify-content-center liststyle">
-                                <li><a target="_blank" href="https://facebook.com/abhishekjnvk"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a target="_blank" href="https://github.com/abhishekjnvk"><i class="fab fa-github"></i></a></li>
-                                <li><a target="_blank" href="https://linkedin.com/in/abhishekjnvk"><i class="fab fa-linkedin-in"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12 col-sm-12 col-12">
-                        <div class="inner text-lg-right text-center mt_md--20 mt_sm--20">
-                            <div class="text">
-                                <p>Copyright © <a target="_blank" href="https://github.com/abhishekjnvk">abhishekjnvk.</a> All Rights Reserved.</p>
-                            </div>
-                        </div>
-                    </div>
+
+        </div>
+    </div>
+    <footer class="footer mt-auto py-3 border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <p class="text-muted">Made with <span class="text-danger">&hearts;</span> by <a href="https://github.com/abhishekjnvk">
+                            <span class="text-primary">Abhishek</span>
+                        </a>
+                    </p>
+                </div>
+
+                <div class="col-lg-8 text-end">
+                    <a class="footer-link" target="_blank" href="https://instagram.com/abhishekjnvk"><i class="fab fa-instagram text-danger"></i></a>
+                    <a class="footer-link" target="_blank" href="https://github.com/abhishekjnvk"><i class="fab fa-github"></i></a>
+                    <a class="footer-link" target="_blank" href="https://linkedin.com/in/abhishekjnvk"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/modernizr.min.js"></script>
-    <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/jquery.js"></script>
-    <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/bootstrap.min.js"></script>
-    <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/stellar.js"></script>
-    <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/particles.js"></script>
-    <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/masonry.js"></script>
-    <script src="<?= getenv('app.baseURL') ?>public/assets/js/vendor/stickysidebar.js"></script>
-    <script src="<?= getenv('app.baseURL') ?>public/assets/js/main.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
-
-    <script>
-        jQuery(document).ready(function($) {
-            $("#password_div").hide();
-
-            //onchange on enableAnalytics checkbox
-            $("#enableAnalytics").change(function() {
-                if (this.checked) {
-                    $("#password").prop('required', true);
-                    $("#password_div").show();
-                } else {
-                    $("#password").prop('required', false);
-                    $("#password_div").hide();
-                }
-            });
-
-            function check() {
-                let password = $("#password").val();
-                let link = $("#link").val();
-                if (!validURL(link)) {
-                    $.alert("Invalid Link")
-                    return false;
-                } else {
-                    let isAnalyticsEnabled = $("#enableAnalytics").is(":checked");
-                    if (isAnalyticsEnabled) {
-                        if (password.length < 4) {
-                            $.alert("Password must be atleast 4 characters long")
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-                return false;
-                return false;
-            }
-
-
-            function validURL(string) {
-                let url;
-                try {
-                    url = new URL(string);
-                } catch (_) {
-                    return false;
-                }
-                return url.protocol === "http:" || url.protocol === "https:";
-            }
-        });
-    </script>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.2.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= getenv('app.baseURL') ?>public/home.js"></script>
 </body>
 
 </html>

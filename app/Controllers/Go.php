@@ -17,10 +17,12 @@ class Go extends BaseController
 					$userAgent = $_SERVER['HTTP_USER_AGENT'];
 					logData($linkCode, $userAgent);
 				}
-				$auth_url = $link_detail->link;
-				echo $auth_url;
-				header("Location: $auth_url");
-				exit;
+				$redirect_url = $link_detail->link;
+				$data['redirect_url'] = $redirect_url;
+				return view('go', $data);
+
+				// header("Location: $auth_url");
+				// exit;
 			} else {
 				$data['error'] = 'No Link Found/Link Expired';
 				return view('error', $data);

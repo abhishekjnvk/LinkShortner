@@ -16,6 +16,7 @@ class Track extends BaseController
 			$link_modal = new LinkModal();
 			$link_detail = $link_modal->where('code', $method)->first();
 			$fetch = 0;
+			$data = [];
 			if (!empty($link_detail)) {
 				if (!empty($link_detail->password)) {
 					if (isset($_POST['password'])) {
@@ -25,9 +26,6 @@ class Track extends BaseController
 							$data['server_message'] = 'Wrong Password';
 							$data['ask_password'] = 1;
 						}
-					} else {
-						$data['server_message'] = 'Password Required';
-						$data['ask_password'] = 1;
 					}
 				} else {
 					$fetch = 1;

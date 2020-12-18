@@ -95,7 +95,6 @@ class LinkModal extends Model
     public function normalizeUrl($url)
     {
         unset($url['password']);
-        unset($url['isAnalyticsEnabled']);
         unset($url['code']);
         return $url;
     }
