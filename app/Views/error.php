@@ -40,25 +40,7 @@
             </div>
         </div>
     </div>
-
-    <footer class="footer mt-auto py-3 border-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <p class="text-muted">Made with <span class="text-danger">&hearts;</span> by <a href="https://github.com/abhishekjnvk">
-                            <span class="text-primary">Abhishek</span>
-                        </a>
-                    </p>
-                </div>
-
-                <div class="col-lg-8 text-end">
-                    <a class="footer-link" target="_blank" href="https://instagram.com/abhishekjnvk"><i class="fab fa-instagram text-danger"></i></a>
-                    <a class="footer-link" target="_blank" href="https://github.com/abhishekjnvk"><i class="fab fa-github"></i></a>
-                    <a class="footer-link" target="_blank" href="https://linkedin.com/in/abhishekjnvk"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <?php echo view('components/footer.php'); ?>
 
 </body>
 

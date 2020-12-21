@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link Shortner</title>
+    <title>Link Shortener</title>
     <link href="https://abhishekjnvk.github.io/Font-Awesome-Pro/include/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= getenv('app.baseURL') ?>public/styles.css">
@@ -29,26 +29,7 @@
             </div>
         </div>
     </div>
-
-    <footer class="footer mt-auto py-3 border-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-4">
-                    <p class="text-muted">Made with <span class="text-danger">&hearts;</span> by <a href="https://github.com/abhishekjnvk">
-                            <span class="text-primary">Abhishek</span>
-                        </a>
-                    </p>
-                </div>
-
-                <div class="col-lg-8 text-end">
-                    <a class="footer-link" target="_blank" href="https://instagram.com/abhishekjnvk"><i class="fab fa-instagram text-danger"></i></a>
-                    <a class="footer-link" target="_blank" href="https://github.com/abhishekjnvk"><i class="fab fa-github"></i></a>
-                    <a class="footer-link" target="_blank" href="https://linkedin.com/in/abhishekjnvk"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
+    <?php echo view('components/footer.php'); ?>
 </body>
 
 </html>
