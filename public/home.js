@@ -33,9 +33,9 @@ jQuery(document).ready(function($) {
 
     $("#advance_options").click(function() {
         if ($("#advance_options").is(":checked")) {
-            $("#advance_options_div").show(500);
+            $("#advance_options_div").show(250);
         } else {
-            $("#advance_options_div").hide(500);
+            $("#advance_options_div").hide(250);
         }
     });
 
@@ -69,17 +69,16 @@ async function submitForm() {
 
         if (data.status) {
             console.log(data)
-            $("#shortener_form").hide(500);
+            $("#shortener_form").hide(250);
             $("#alert_box").html(
-                `<div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <strong>Status:  ${data.message}</strong><br/><br/>
-                            <b>Shorten Url: </b><a href="${data.data.link}" target="_blank" class="alert-link">${data.data.link}</a> <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${data.data.link}')">Copy</button><br/><br/>
+                `<div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <small>Status:  ${data.message}</small><br/><br/>
+                            <small>Shorten Url: </small><a href="${data.data.link}" target="_blank" class="alert-link">${data.data.link}</a> <button class="btn-sm btn-outline-primary" onclick="copyToClipboard('${data.data.link}')">Copy</button><br/><br/>
                             ${data.data.analytics_link?`
-                            <strong>Analytics URL: </strong> <a href="${data.data.analytics_link}" target="_blank" class="alert-link">${data.data.analytics_link}</a>
-                            <button class="btn btn-sm btn-outline-primary" onclick="copyToClipboard('${data.data.analytics_link}')">Copy</button><br/><br/>
-                            <strong>Analytics Password: ${analytics_password}</strong>`:""}
+                            <small>Analytics URL: </small> <a href="${data.data.analytics_link}" target="_blank" class="alert-link">${data.data.analytics_link}</a>
+                            <button class="btn-sm btn-outline-primary" onclick="copyToClipboard('${data.data.analytics_link}')">Copy</button><br/><br/>
+                            <small>Analytics Password: ${analytics_password}</small>`:""}
                             <br/><br/><br/><br/><br/>
-
                             <a href="${base_url}" class="btn btn-sm btn-default mt-2">Shorten Another URL</a>
                         </div>`
             );

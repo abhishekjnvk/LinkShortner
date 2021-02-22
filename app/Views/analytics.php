@@ -15,12 +15,12 @@
 
     <div class="container">
 
-        <h1 class="text-center mt-5">
+        <h1 class="text-center mt-5 header-title">
             <a href="<?= getenv('app.baseURL') ?>">
                 <span class="theme-gradient">Link Shortener</span> <span class="text-light">|</span><span class="theme-gradient"> Analytics</span>
             </a>
         </h1>
-        <div class="mb-3 col-lg-3 mx-auto py-5 mt-5">
+        <div class="mb-3 col-lg-3 mx-auto py-2 mt-5">
             <form class="d-flex" method="post">
                 <input type="password" class="form-control me-2" name="password" value="<?php
                                                                                         if (!empty($_POST['password'])) {
@@ -35,8 +35,9 @@
             <div class="text-center">
                 <h3 class="title theme-gradient text-center mb-4">Total Clicks: <?= count($all_data) ?></h3>
             </div>
-            <div class="bg-light p-2 rounded">
-                <table class="table">
+            <div class="bg-light p-2 rounded mb-5" style="overflow-x:auto;">
+
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -66,31 +67,44 @@
                                 <th scope="row"><?= $sl++ ?></th>
                                 <td><?= $data->ip ?></td>
                                 <td class="text-capitalize"><?= $device ?></td>
-                                <td><?= $dat_object->clientInfo->name ?> <small>(<?= $dat_object->clientInfo->version ?>)</small></td>
-                                <td><?= $dat_object->osInfo->name ?> <?php
-                                                                        if (!empty($dat_object->osInfo->platform)) { ?>
+                                <td><?php
+                                    if (!empty($dat_object->clientInfo->name)) {
+                                        echo $dat_object->clientInfo->name;
+                                    } ?>
+                                    <?php
+                                    if (!empty($dat_object->clientInfo->version)) { ?>
+                                        <small>(<?= $dat_object->clientInfo->version ?>)</small>
+                                    <?php } ?>
+                                </td>
+                                <td>
+
+                                    <?php
+                                    if (!empty($dat_object->osInfo->name)) {
+                                        echo $dat_object->osInfo->name;
+                                    } ?>
+                                    <?php
+                                    if (!empty($dat_object->osInfo->platform)) { ?>
                                         <small>(<?= $dat_object->osInfo->platform ?>)</small>
                                     <?php } ?>
                                 </td>
                                 <td class="text-center"><?= $data->times ?></td>
-
                                 <td><?= getCity($data->ip) ?></td>
                                 <td title="Epoch: <?= $data->time ?>"><?= date('d/m/Y h:i A', $data->time) ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
                 </table>
-            </div>
-        <?php } else { ?>
-            <?php if (!empty($server_message)) { ?>
-                <div class="alert alert-danger col-lg-4 mx-auto" role="alert">
-                    <?= $server_message ?>
-                </div>
+                </>
+            <?php } else { ?>
+                <?php if (!empty($server_message)) { ?>
+                    <div class="alert alert-danger col-lg-4 mx-auto" role="alert">
+                        <?= $server_message ?>
+                    </div>
+                <?php } ?>
             <?php } ?>
-        <?php } ?>
-    </div>
+            </div>
 
-    <?php echo view('components/footer.php'); ?>
+            <?php echo view('components/footer.php'); ?>
 </body>
 
 </html>
