@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\LinkModal;
+use phpDocumentor\Reflection\Types\Null_;
 
 class Go extends BaseController
 {
@@ -15,11 +16,19 @@ class Go extends BaseController
 			if (!empty($link_detail)) {
 				if ($link_detail->isAnalyticsEnabled) {
 					$userAgent = $_SERVER['HTTP_USER_AGENT'];
-					logData($linkCode, $userAgent);
+					$utm_source = $_GET['utm_source'];
+					unset($_GET['utm_source']);
+					if (!empty($_GET)) {
+						$paramsString = json_encode($_GET);
+					} else {
+						$paramsString = NULL;
+					}
+
+					logData($linkCode, $userAgent, $utm_source, $paramsString);
 				}
 				$redirect_url = $link_detail->link;
 				$data['redirect_url'] = $redirect_url;
-				header("Location: $redirect_url");
+				// header("Location: $redirect_url");
 				exit;
 				// return view('go', $data);
 			} else {

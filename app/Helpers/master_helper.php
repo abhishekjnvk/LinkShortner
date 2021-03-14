@@ -4,6 +4,7 @@ use App\Models\AnalyticsModal;
 use App\Models\LinkModal;
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\Device\AbstractDeviceParser;
+use phpDocumentor\Reflection\Types\Null_;
 
 if (!function_exists('getIpData')) {
     function getIpData($ip)
@@ -96,7 +97,7 @@ if (!function_exists('get_client_ip')) {
 
 
 if (!function_exists('logData')) {
-    function logData($id, $userAgent)
+    function logData($id, $userAgent, $utmSource, $urlParams)
     {
         if (isset($id) && isset($userAgent)) {
             helper('master_helper');
@@ -124,6 +125,8 @@ if (!function_exists('logData')) {
                 $analytics_database['time'] = time();
                 $analytics_database['code'] = $id;
                 $analytics_database['ip'] = $ip;
+                $analytics_database['utm_source'] = $utmSource;
+                $analytics_database['url_params'] = $urlParams;
 
                 $pro = $analytics_modal->where(["ip" => $ip, "code" => $id])->orderBY('time', 'DESC')->first();
                 if (empty($pro)) {
