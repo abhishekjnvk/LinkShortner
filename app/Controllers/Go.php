@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\LinkModal;
-use phpDocumentor\Reflection\Types\Null_;
 
 class Go extends BaseController
 {
@@ -27,6 +26,17 @@ class Go extends BaseController
 					logData($linkCode, $userAgent, $utm_source, $paramsString);
 				}
 				$redirect_url = $link_detail->link;
+
+				if (!empty($_GET)) {
+					$original_query_string = explode('?', $redirect_url)[1];
+					foreach (explode('&', $original_query_string) as $param) {
+						$param = explode('=', $param);
+						$_GET[$param[0]] = $param[1];
+					}
+
+					$prevRedirectData = explode('?', $redirect_url);
+					$redirect_url = $prevRedirectData[0] . '?' . http_build_query($_GET);
+				}
 				$data['redirect_url'] = $redirect_url;
 				header("Location: $redirect_url");
 				exit;
