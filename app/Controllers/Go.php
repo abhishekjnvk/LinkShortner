@@ -28,7 +28,7 @@ class Go extends BaseController
 				}
 				$redirect_url = $link_detail->link;
 				$data['redirect_url'] = $redirect_url;
-				// header("Location: $redirect_url");
+				header("Location: $redirect_url");
 				exit;
 				// return view('go', $data);
 			} else {
