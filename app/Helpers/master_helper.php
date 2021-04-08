@@ -93,31 +93,6 @@ if (!function_exists('getIpData')) {
 }
 
 
-if (!function_exists('getCity')) {
-    function getCity($ip)
-    {
-        $details = getIPData($ip);
-        // print_r($details);
-        if (empty($details->city)) {
-            return "N/a";
-        }
-        return $details->city;
-    }
-}
-
-
-if (!function_exists('getISP')) {
-    function getISP($ip)
-    {
-        $details = getIPData($ip);
-        if (empty($details->org)) {
-            return "";
-        }
-        $isp = $details->org;
-        return $isp;
-    }
-}
-
 if (!function_exists('generate_id')) {
     function generate_id()
     {

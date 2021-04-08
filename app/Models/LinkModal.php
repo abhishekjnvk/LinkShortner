@@ -10,7 +10,7 @@ class LinkModal extends Model
     protected $primaryKey = 'id';
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
-    protected $allowedFields = ['id', 'link', 'code', 'timestamp', 'isAnalyticsEnabled', 'password', 'title', 'expiry'];
+    protected $allowedFields = ['id', 'link', 'code', 'timestamp', 'isAnalyticsEnabled', 'password', 'title', 'expiry', 'added_ip', 'city', 'country'];
     protected $useTimestamps = false;
     protected $skipValidation     = false;
 
@@ -82,6 +82,10 @@ class LinkModal extends Model
         $data['password'] = $password;
         $data['timestamp'] = time();
         $data['expiry'] = $expiry;
+        $ip = get_client_ip();
+        $data['city'] = getIPData($ip)->city;
+        $data['country'] = getIPData($ip)->country;
+        $data['added_ip'] = $ip;
         $data['isAnalyticsEnabled'] = !empty($password) ? 1 : 0;
 
         if ($this->save($data)) {
