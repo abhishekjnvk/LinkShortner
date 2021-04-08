@@ -10,7 +10,7 @@ class AnalyticsModal extends Model
     protected $primaryKey = 'id';
     protected $returnType     = 'object';
     protected $useSoftDeletes = false;
-    protected $allowedFields = ['id', 'code', 'ip', 'time', 'data', 'times', 'utm_source', 'url_params'];
+    protected $allowedFields = ['id', 'code', 'is_bot', 'ip', 'time', 'data', 'times', 'utm_source', 'url_params', 'country', 'city', 'region', 'timezone', 'continent'];
     protected $useTimestamps = false;
     protected $skipValidation     = false;
 }

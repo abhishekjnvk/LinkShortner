@@ -12,47 +12,51 @@
 </head>
 
 <body class="d-flex flex-column">
-
     <div class="container">
-
         <h1 class="text-center mt-5 header-title">
             <a href="<?= getenv('app.baseURL') ?>">
                 <span class="theme-gradient">Link Shortener</span> <span class="text-light">|</span><span class="theme-gradient"> Analytics</span>
             </a>
         </h1>
-        <div class="mb-3 col-lg-3 mx-auto py-2 mt-5">
-            <form class="d-flex" method="post">
-                <input type="password" class="form-control me-2" name="password" value="<?php
-                                                                                        if (!empty($_POST['password'])) {
-                                                                                            echo $_POST['password'];
-                                                                                        } ?>" placeholder="Enter your analytics password">
-                <button class="btn btn-info btn-bg" type="submit">Get</button>
-            </form>
 
-        </div>
+        <?php if (!($authenticated)) { ?>
+            <div class="mb-3 col-lg-4 mx-auto py-2 mt-5">
+                <form class="d-flex" method="post">
+                    <input type="password" class="form-control me-2" name="password" value="<?php
+                                                                                            if (!empty($_POST['password'])) {
+                                                                                                echo $_POST['password'];
+                                                                                            } ?>" placeholder="Enter analytics password">
+                    <button class="btn btn-info btn-bg" type="submit">Get</button>
+                </form>
+            </div>
+        <?php } ?>
+
+
 
         <?php if (!empty($all_data)) {  ?>
-            <div class="text-center">
-                <h3 class="title theme-gradient text-center mb-4">Total Clicks: <?= count($all_data) ?></h3>
+            <div class="text-center mt-4">
+                <h6 class="title theme-gradient text-center mb-4">Total Unique Clicks: <?= $total ?></h6>
             </div>
             <div class="bg-light p-2 rounded mb-5" style="overflow-x:auto;">
 
-                <table class="table table-bordered">
-                    <thead>
+                <table class="table table-bordered table-analytics">
+                    <thead class="bg-dark text-light">
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">IP</th>
+                            <th scope="col">Timestamp</th>
                             <th scope="col">Device</th>
                             <th scope="col">Browser<small> (Version)</small></th>
                             <th scope="col">OS</th>
                             <th scope="col text-center">Repetitive Count</th>
                             <th scope="col">City</th>
-                            <th scope="col">Timestamp</th>
+                            <th scope="col">UTM Source</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <?php
-                        $sl = 1;
+                        $sl = $perPage * ($page - 1) + 1;
                         foreach ($all_data as $data) {
                             $dat_object = json_decode($data->data);
                             $device = $dat_object->device;
@@ -64,9 +68,10 @@
                             }
                         ?>
                             <tr>
-                                <th scope="row"><?= $sl++ ?></th>
+                                <td scope="row"><?= $sl++ ?></td>
                                 <td><?= $data->ip ?></td>
-                                <td class="text-capitalize"><?= $device ?></td>
+                                <td title="Epoch: <?= $data->time ?>"><?= date('d/m/Y h:i A', $data->time) ?></td>
+                                <td class="text-capitalize"><?= $data->is_bot == "true" ? "<i class='fas fa-robot text-primary'></i> " : "" ?><?= $device ?></td>
                                 <td><?php
                                     if (!empty($dat_object->clientInfo->name)) {
                                         echo $dat_object->clientInfo->name;
@@ -88,16 +93,20 @@
                                     <?php } ?>
                                 </td>
                                 <td class="text-center"><?= $data->times ?></td>
-                                <td><?= getCity($data->ip) ?></td>
-                                <td title="Epoch: <?= $data->time ?>"><?= date('d/m/Y h:i A', $data->time) ?></td>
+                                <td><?= $data->city ? $data->city . ', ' : '' ?><?= $data->region ? $data->region . ', ' : ''  ?><?= $data->country ? '(' . $data->country . ')' : "" ?></td>
+                                <td> <?= $data->utm_source ?></td>
                             </tr>
                         <?php } ?>
                     </tbody>
                 </table>
-                </>
+
+                <div class="pagination text-center mt-5">
+                    <?= $pager->makeLinks($page, $perPage, $total, 'custom_pager') ?>
+                </div>
+
             <?php } else { ?>
                 <?php if (!empty($server_message)) { ?>
-                    <div class="alert alert-danger col-lg-4 mx-auto" role="alert">
+                    <div class="alert alert-danger col-lg-4 mx-auto text-center mt-5" role="alert">
                         <?= $server_message ?>
                     </div>
                 <?php } ?>

@@ -4,43 +4,108 @@ use App\Models\AnalyticsModal;
 use App\Models\LinkModal;
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\Device\AbstractDeviceParser;
-use phpDocumentor\Reflection\Types\Null_;
+
+define('DEFAULT_IP_DATA', [
+    'country' => "",
+    'city' => "",
+    'region' => "",
+    'continent' => "",
+    'timezone' => "",
+]);
+
+
+if (!function_exists('getIpDataFromIpApi')) {
+    function getIpDataFromIpApi($ip)
+    {
+        $ipData = DEFAULT_IP_DATA;
+        $details = json_decode(file_get_contents("http://ip-api.com/json/{$ip}"));
+        if ($details->status == "fail") {
+            return $ipData;
+        }
+        $ipData['country'] = $details->country;
+        $ipData['city'] = $details->city;
+        $ipData['region'] = $details->regionName;
+        $ipData['timezone'] = $details->timezone;
+
+        return $ipData;
+    }
+}
+
+if (!function_exists('getIpDataFromIpWhoIs')) {
+    function getIpDataFromIpWhoIs($ip)
+    {
+        $ipData = DEFAULT_IP_DATA;
+        $details = json_decode(file_get_contents("https://ipwhois.app/json/{$ip}"));
+        if ($details->success == true) {
+            $ipData['country'] = $details->country;
+            $ipData['city'] = $details->city;
+            $ipData['region'] = $details->region;
+            $ipData['continent'] = $details->continent;
+            $ipData['timezone'] = $details->timezone;
+        }
+        return $ipData;
+    }
+}
+
+if (!function_exists('getIpDataFromIpWho')) {
+    function getIpDataFromIpWho($ip)
+    {
+        $ipData = DEFAULT_IP_DATA;
+        $details = json_decode(file_get_contents("https://ipwho.is/{$ip}"));
+        if ($details->success == true) {
+            $ipData['country'] = $details->country;
+            $ipData['city'] = $details->city;
+            $ipData['region'] = $details->region;
+            $ipData['continent'] = $details->continent;
+            $ipData['timezone'] = $details->timezone->id;
+        }
+
+        return $ipData;
+    }
+}
 
 if (!function_exists('getIpData')) {
     function getIpData($ip)
     {
         if (!$details = cache("ipDataOf_$ip")) {
-            $details = json_decode(file_get_contents("http://ipinfo.io/{$ip}/json"));
-            cache()->save("ipDataOf_$ip", $details, 864000);
+            $randomNumber = rand(1, 3);
+            switch ($randomNumber) {
+                case 1:
+                    $details = getIpDataFromIpWho($ip);
+                    break;
+                case 2:
+                    $details = getIpDataFromIpApi($ip);
+                    break;
+                case 3:
+                    $details = getIpDataFromIpWhoIs($ip);
+                    break;
+                default:
+                    $details = getIpDataFromIpWhoIs($ip);
+                    break;
+            }
+            cache()->save("ipDataOf_$ip", $details, 3600 * 24 * 365);
         }
+
+        //convert to object
+        $details = (object) $details;
         return $details;
     }
 }
+
 
 if (!function_exists('getCity')) {
     function getCity($ip)
     {
         $details = getIPData($ip);
+        // print_r($details);
         if (empty($details->city)) {
-            return "";
+            return "N/a";
         }
-        $city = $details->city;
-        $region = $details->region;
-        $country = $details->country;
-        if ($region) {
-            if ($country) {
-                $city = $city . ", " . $region . " (" . $country . ")";
-            } else {
-                $city = $city . ", " . $region;
-            }
-        } else {
-            if ($country) {
-                $city = $city . "(" . $country . ")";
-            }
-        }
-        return $city;
+        return $details->city;
     }
 }
+
+
 if (!function_exists('getISP')) {
     function getISP($ip)
     {
@@ -106,35 +171,43 @@ if (!function_exists('logData')) {
             $dd = new DeviceDetector($userAgent);
             $dd->parse();
             if ($dd->isBot()) {
-                // $botInfo = $dd->getBot();
+                $botInfo = $dd->getBot();
+                $analytics_data['botInfo'] = $botInfo;
+                $analytics_database['data'] = json_encode($analytics_data);
+                $analytics_database['is_bot'] = true;
             } else {
                 $clientInfo = $dd->getClient();
                 $osInfo = $dd->getOs();
                 $device = $dd->getDeviceName();
                 $brand = $dd->getBrandName();
                 $model = $dd->getModel();
-
-                $ip = get_client_ip();
                 $analytics_data['clientInfo'] = $clientInfo;
                 $analytics_data['osInfo'] = $osInfo;
                 $analytics_data['device'] = $device;
                 $analytics_data['brand'] = $brand;
                 $analytics_data['model'] = $model;
+            }
 
-                $analytics_database['data'] = json_encode($analytics_data);
-                $analytics_database['time'] = time();
-                $analytics_database['code'] = $id;
-                $analytics_database['ip'] = $ip;
-                $analytics_database['utm_source'] = $utmSource;
-                $analytics_database['url_params'] = $urlParams;
+            $ip = get_client_ip();
+            $analytics_database['data'] = json_encode($analytics_data);
+            $analytics_database['time'] = time();
+            $analytics_database['code'] = $id;
+            $analytics_database['ip'] = $ip;
+            $analytics_database['utm_source'] = $utmSource;
+            $analytics_database['url_params'] = $urlParams;
+            $analytics_database['times'] = 1;
+            $analytics_database['city'] = getIPData($ip)->city;
+            $analytics_database['country'] = getIPData($ip)->country;
+            $analytics_database['region'] = getIPData($ip)->region;
+            $analytics_database['continent'] = getIPData($ip)->continent;
+            $analytics_database['timezone'] = getIPData($ip)->timezone;
+            $pro = $analytics_modal->where(["ip" => $ip, "code" => $id])->orderBY('time', 'DESC')->first();
 
-                $pro = $analytics_modal->where(["ip" => $ip, "code" => $id])->orderBY('time', 'DESC')->first();
-                if (empty($pro)) {
-                    $analytics_modal->save($analytics_database);
-                } else {
-                    $analytics_database['times'] = $pro->times + 1;
-                    $analytics_modal->save($analytics_database);
-                }
+            if (empty($pro)) {
+                $analytics_modal->save($analytics_database);
+            } else {
+                $analytics_database['times'] = $pro->times + 1;
+                $analytics_modal->save($analytics_database);
             }
         }
     }
