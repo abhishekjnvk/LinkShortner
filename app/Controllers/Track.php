@@ -57,6 +57,13 @@ class Track extends BaseController
 				$data['all_data'] = $all_data;
 				$data['pager'] = $analytics_modal->pager;
 				$data['total'] = $analytics_modal->where('code', $linkCode)->countAllResults();
+				// count unique country and unique city
+				$unique_country = $analytics_modal->where('code', $linkCode)->select('country')->groupBy('country')->countAllResults();
+				$unique_city = $analytics_modal->where('code', $linkCode)->select('city')->groupBy('city')->countAllResults();
+				$data['total_clicks'] = $analytics_modal->where('code', $linkCode)->select('sum(times) as total_count')->first()->total_count;
+
+				$data['unique_country'] = $unique_country;
+				$data['unique_city'] = $unique_city;
 				$data['page'] = $page;
 				$data['perPage'] = $limit;
 				if (empty($all_data))

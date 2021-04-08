@@ -34,11 +34,24 @@
 
 
         <?php if (!empty($all_data)) {  ?>
-            <div class="text-center mt-4">
-                <h6 class="title theme-gradient text-center mb-4">Total Unique Clicks: <?= $total ?></h6>
+            <div class="mt-5 text-light mb-2 mx-2">
+                <div class="row theme-gradient text-center">
+                    <div class="col-6 col-lg-3">
+                        Clicks: <?= $total_clicks ?>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        Unique Clicks: <?= $total ?>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        Total Country: <?= $unique_country ?>
+                    </div>
+                    <div class="col-6 col-lg-3">
+                        Total City: <?= $unique_city ?>
+                    </div>
+                </div>
             </div>
-            <div class="bg-light p-2 rounded mb-5" style="overflow-x:auto;">
 
+            <div class="bg-light p-2 rounded mb-5" style="overflow-x:auto;">
                 <table class="table table-bordered table-analytics">
                     <thead class="bg-dark text-light">
                         <tr>
