@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Apr 08, 2023 at 10:14 PM
+-- Generation Time: Apr 08, 2023 at 10:51 PM
 -- Server version: 5.7.34
 -- PHP Version: 7.4.21
 
@@ -58,7 +58,10 @@ CREATE TABLE `links` (
   `timestamp` varchar(20) NOT NULL,
   `isAnalyticsEnabled` int(11) NOT NULL,
   `password` varchar(200) NOT NULL,
-  `expiry` varchar(25) NOT NULL
+  `expiry` varchar(25) NOT NULL,
+  `added_ip` varchar(255) DEFAULT NULL,
+  `country` varchar(55) DEFAULT NULL,
+  `city` int(55) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
