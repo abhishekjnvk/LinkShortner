@@ -9,18 +9,22 @@ class Track extends BaseController
 {
 	function _remap($linkCode)
 	{
+		helper('master_helper');
 		$session = session();
 		$data = [];
 
 		if ($linkCode) {
 			$analytics_modal = new AnalyticsModal();
-			helper('master_helper');
 			$link_modal = new LinkModal();
-			$link_detail = $link_modal->where('code', $linkCode)->first();
+			$link_detail = $link_modal->where('code', sanitiesString($linkCode))->first();
 			$authenticated = false;
-			$limit = 20;
-			$page = $this->request->getVar('page');
-			$password = $this->request->getVar('password');
+			$limit = sanitiesString($this->request->getVar('limit'));
+			if (empty($limit)) {
+				$limit = 20;
+			}
+			$page = sanitiesString($this->request->getVar('page'));
+			$password = sanitiesString($this->request->getVar('password'));
+
 			if (empty($page)) {
 				$page = 1;
 			}

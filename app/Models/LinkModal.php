@@ -72,9 +72,9 @@ class LinkModal extends Model
     {
         helper('master_helper');
         $code = generate_id();
-        $password = isset($password) ? $password : '';
-        $expiry = isset($expiry) ? (int) $expiry : 0;
-        $expiry = $expiry > 0 ? time() + $expiry : 0;
+        $password = sanitiesString(isset($password) ? $password : '');
+        $expiry = sanitiesString(isset($expiry) ? (int) $expiry : 0);
+        $expiry = sanitiesString($expiry > 0 ? time() + $expiry : 0);
 
         $data['link'] = $link;
         $data['title'] = $title;

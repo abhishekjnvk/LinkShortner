@@ -10,6 +10,7 @@ class Shorten extends BaseController
 {
     public function index()
     {
+        helper('master_helper');
         $this->response->setContentType('Content-Type: application/json');
         $request = service('request');
 
@@ -45,7 +46,7 @@ class Shorten extends BaseController
                 $expiry = 0;
 
                 if (isset($body->analytics_password)) {
-                    $analyticsPassword = $body->analytics_password;
+                    $analyticsPassword = sanitiesString($body->analytics_password);
                 }
                 if (isset($body->expiry)) {
                     $expiry = $body->expiry;
