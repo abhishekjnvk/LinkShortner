@@ -191,7 +191,9 @@ if (!function_exists('logData')) {
 if (!function_exists('sanitiesString')) {
     function sanitiesString($inputString)
     {
-        $allowedCharsRegex = '/[a-zA-Z0-9-_]/';
+        $allowedCharsRegex = '/[^a-zA-Z0-9-_]/';
+
+        // Use the preg_replace function to remove all characters that are not alphanumeric, hyphens, or underscores
         $cleanedString = preg_replace($allowedCharsRegex, '', $inputString);
         return $cleanedString;
     }
