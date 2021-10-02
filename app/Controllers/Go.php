@@ -8,6 +8,7 @@ class Go extends BaseController
 {
 	function _remap($linkCode)
 	{
+		$linkCode = sanitiesString($linkCode);
 		helper('master_helper');
 		if ($linkCode) {
 			$link_modal = new LinkModal();
@@ -15,7 +16,7 @@ class Go extends BaseController
 			if (!empty($link_detail)) {
 				if ($link_detail->isAnalyticsEnabled) {
 					$userAgent = $_SERVER['HTTP_USER_AGENT'];
-					$utm_source = $this->request->getVar('utm_source');
+					$utm_source = sanitiesString($this->request->getVar('utm_source'));
 					unset($_GET['utm_source']);
 					if (!empty($_GET)) {
 						$paramsString = json_encode($_GET);

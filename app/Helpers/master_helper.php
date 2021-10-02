@@ -187,3 +187,12 @@ if (!function_exists('logData')) {
         }
     }
 }
+
+if (!function_exists('sanitiesString')) {
+    function sanitiesString($inputString)
+    {
+        $allowedCharsRegex = '/[a-zA-Z0-9-_]/';
+        $cleanedString = preg_replace($allowedCharsRegex, '', $inputString);
+        return $cleanedString;
+    }
+}
