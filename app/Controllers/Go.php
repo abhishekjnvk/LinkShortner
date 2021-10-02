@@ -8,8 +8,8 @@ class Go extends BaseController
 {
 	function _remap($linkCode)
 	{
-		$linkCode = sanitiesString($linkCode);
 		helper('master_helper');
+		$linkCode = sanitiesString($linkCode);
 		if ($linkCode) {
 			$link_modal = new LinkModal();
 			$link_detail = $link_modal->getLinkDetail($linkCode);
