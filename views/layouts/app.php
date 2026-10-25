@@ -81,7 +81,7 @@ $pageTitle = $pageTitle ?? config('app.name');
     </div>
     <script src="<?= e(asset_url('js/app.js')) ?>"></script>
     <?php if (!empty($includeChartJs ?? null)): ?>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     <?php endif; ?>
     <?php if (!empty($includeQrJs ?? null)): ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
